@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from logging.config import dictConfig
+from flask import abort
 
 dictConfig({
     'version': 1,
@@ -13,7 +14,7 @@ dictConfig({
         'formatter': 'default'
     }},
     'root': {
-        'level': 'INFO',
+        'level': 'ERROR',
         'handlers': ['wsgi']
     }
 })
@@ -30,6 +31,9 @@ def piotr():
 
 @app.route('/')
 def hello_all():
+    app.logger.info("info")
+    app.logger.error("error")
+    app.logger.debug("debug")
     all = ''
     for p  in persons:
         all = all + ','+ p
@@ -41,3 +45,12 @@ def add_person(name):
     app.logger.info("Processing request /person/ "+ name + " Header imie: "+request.headers['imie'])
     return 'OK'   
 
+@app.route('/person/<name>' , methods=['DELETE'])
+def remove_person(name):
+    persons.remove(name)
+    app.logger.info("Processing request /person/"+ name + " Header imie: "+request.headers['imie'])
+    return 'OK'   
+
+@app.route('/error' , methods=['GET'])
+def error():
+    abort(401)   
