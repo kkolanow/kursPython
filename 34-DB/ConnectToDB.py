@@ -19,7 +19,7 @@ user2_dbconfig = {
 'database': 'vsearchlogDB', }
 
 
-conn = mysql.connector.connect(**dbconfig)
+conn = mysql.connector.connect(**user2_dbconfig)
 
 cursor = conn.cursor()
 
